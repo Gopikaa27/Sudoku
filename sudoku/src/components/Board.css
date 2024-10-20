@@ -1,0 +1,70 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Align items in a column */
+    height: 100vh; /* Center the board vertically */
+    background-color: #fdfdfd; /* Light background color */
+  }
+  
+  .sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    width: 450px; /* Fixed width for the entire board */
+    height: 450px; /* Fixed height for the entire board */
+    border: 3px solid black; /* Outer border for the board */
+    margin-bottom: 20px; /* Space below the board */
+  }
+  
+  .sudoku-cell {
+    width: 50px; /* Each cell's width */
+    height: 50px; /* Each cell's height */
+    font-size: 22px; /* Font size for the numbers */
+    text-align: center; /* Center the input text */
+    border: 1px solid black; /* Border for each cell */
+    box-sizing: border-box; /* Ensure padding and border don't affect size */
+    outline: none; /* Removes focus outline */
+    background-color: #fafcfc; /* Default background color */
+  }
+  
+  .sudoku-cell.pre-filled {
+    background-color: #b5ecf9; /* Grey background for pre-filled cells */
+    font-weight: bold;
+    color: black;
+  }
+  
+  .sudoku-cell:focus {
+    background-color: #d8f5d1; /* Highlight when a cell is focused */
+  }
+  
+  /* Styling to differentiate the 3x3 boxes */
+  .sudoku-cell:nth-child(3n+1) {
+    border-left: 3px solid black; /* Thicker left border for subgrid separation */
+  }
+  
+  .sudoku-cell:nth-child(3n) {
+    border-right: 3px solid black; /* Thicker right border for subgrid separation */
+  }
+  
+  .sudoku-cell:nth-child(27n+1),
+  .sudoku-cell:nth-child(27n+10),
+  .sudoku-cell:nth-child(27n+19) {
+    border-top: 3px solid black; /* Thicker top border for subgrid separation */
+  }
+  
+  .sudoku-cell:nth-child(27n+3),
+  .sudoku-cell:nth-child(27n+12),
+  .sudoku-cell:nth-child(27n+21) {
+    border-bottom: 3px solid black; /* Thicker bottom border for subgrid separation */
+  }
+  
+  .message-container {
+    
+    margin-top: 60px; /* Space above the message */
+  }
+  
+  .message {
+    font-size: 18px; /* Font size for messages */
+    color: rgb(168, 36, 255); /* Color for messages */
+  }
+  
