@@ -17,7 +17,7 @@ const App = () => {
   };
 
   return (
-    <div style={appStyle}>
+    <div>
       <Header />
       <Board />
       <Footer />
