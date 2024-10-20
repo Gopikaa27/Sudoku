@@ -13,11 +13,10 @@ const App = () => {
     justifyContent: 'center', // Center align items vertically
     minHeight: '100vh', // Full viewport height
     backgroundColor: '#f0f0f0', // Background color for the app
-    padding: '60px',
   };
 
   return (
-    <div>
+    <div style={appStyle}>
       <Header />
       <Board />
       <Footer />
