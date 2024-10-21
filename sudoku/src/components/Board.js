@@ -64,15 +64,22 @@ const Board = () => {
   const [completeBoard, setCompleteBoard] = useState([]);
   const [message, setMessage] = useState('');
   const [color, setColor] = useState(Array.from({ length: 9 }, () => Array(9).fill('')));
+  const [initialValues, setInitialValues] = useState([]); // Track the initial values
 
   useEffect(() => {
     const initialCompleteBoard = generateCompleteSudoku();
     const initialPuzzle = createPuzzle(initialCompleteBoard);
     setBoard(initialPuzzle);
     setCompleteBoard(initialCompleteBoard);
+
+    // Track the initial pre-filled values
+    const initialVals = initialPuzzle.map(row => row.map(cell => (cell !== 0)));
+    setInitialValues(initialVals);
   }, []);
 
   const handleChange = (rowIndex, colIndex, value) => {
+    if (initialValues[rowIndex][colIndex]) return; // Prevent editing pre-filled numbers
+
     if (value === '' || /^[1-9]$/.test(value)) {
       const newBoard = [...board];
       newBoard[rowIndex][colIndex] = value ? parseInt(value, 10) : 0; // Set to 0 if empty
@@ -83,6 +90,7 @@ const Board = () => {
         newColor[rowIndex][colIndex] = ''; // Reset color on valid input
         return newColor;
       });
+      checkCompletion(newBoard); // Check for completion
     } else {
       setMessage('Invalid input! Please enter a number between 1 and 9.'); // Error message
     }
@@ -117,6 +125,15 @@ const Board = () => {
     }
   };
 
+  const checkCompletion = (currentBoard) => {
+    const isComplete = currentBoard.every((row, rowIndex) =>
+      row.every((cell, colIndex) => cell === completeBoard[rowIndex][colIndex])
+    );
+    if (isComplete) {
+      setMessage("Thank you for playing this game!"); // Display the thank-you message
+    }
+  };
+
   return (
     <div>
       <div className="sudoku-board">
@@ -128,10 +145,11 @@ const Board = () => {
               type="text"
               maxLength="1"
               className={`sudoku-cell ${cell === 0 ? '' : 'pre-filled'}`}
-              style={{ backgroundColor: color[rowIndex][colIndex] }} // Change background color based on evaluation
+              style={{ backgroundColor: color[rowIndex][colIndex] }} // Change background color based on ev
               value={cell === 0 ? '' : cell}
               onChange={(e) => handleChange(rowIndex, colIndex, e.target.value)}
               onBlur={() => checkValue(rowIndex, colIndex)}
+              disabled={initialValues[rowIndex][colIndex]} // Disable pre-filled cells
             />
           ))
         )}
