@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './Board.css';
 
+// Function to generate a complete Sudoku board
 const generateCompleteSudoku = () => {
   const board = Array.from({ length: 9 }, () => Array(9).fill(0));
+
   const isValid = (board, row, col, num) => {
     for (let i = 0; i < 9; i++) {
       if (board[row][i] === num || board[i][col] === num) return false;
     }
+
     const startRow = Math.floor(row / 3) * 3;
     const startCol = Math.floor(col / 3) * 3;
     for (let i = 0; i < 3; i++) {
@@ -16,6 +19,7 @@ const generateCompleteSudoku = () => {
     }
     return true;
   };
+
   const fillBoard = (board) => {
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
@@ -25,7 +29,7 @@ const generateCompleteSudoku = () => {
             if (isValid(board, row, col, num)) {
               board[row][col] = num;
               if (fillBoard(board)) return true;
-              board[row][col] = 0;
+              board[row][col] = 0; // Backtrack
             }
           }
           return false;
@@ -34,18 +38,21 @@ const generateCompleteSudoku = () => {
     }
     return true;
   };
+
   fillBoard(board);
   return board;
 };
 
+// Function to create a Sudoku puzzle by removing numbers
 const createPuzzle = (board) => {
   const puzzle = board.map(row => [...row]);
   let count = 0;
+
   while (count < 40) {
     const row = Math.floor(Math.random() * 9);
     const col = Math.floor(Math.random() * 9);
     if (puzzle[row][col] !== 0) {
-      puzzle[row][col] = 0;
+      puzzle[row][col] = 0; // Remove number
       count++;
     }
   }
@@ -90,6 +97,7 @@ const Board = () => {
       if (num === completeBoard[row][col]) {
         setMessage('');
         setBoard(newBoard);
+
         const isGameComplete = newBoard.every((r, rIndex) =>
           r.every((cell, cIndex) => cell === completeBoard[rIndex][cIndex])
         );
@@ -99,7 +107,6 @@ const Board = () => {
         }
       } else {
         setMessage('Incorrect number. Try again.');
-        setBoard(newBoard);
       }
     }
   };
@@ -169,3 +176,164 @@ const Board = () => {
 };
 
 export default Board;
+
+
+
+
+
+
+
+
+/* Container styles */
+.sudoku-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.sudoku-container h2 {
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Sudoku Grid Styles */
+.sudoku-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  width: 324px; /* Width adjusted for consistency */
+  border: 4px solid #333; /* Bold outer border */
+  gap: 0;
+}
+
+.sudoku-cell {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border: 1px solid #333; /* Fine border around each cell */
+  box-sizing: border-box;
+}
+
+/* Pre-filled cells */
+.sudoku-cell.initial {
+  color: #333;
+  background-color: #e3fea4;
+  cursor: not-allowed;
+}
+
+/* Selected cell */
+.sudoku-cell.selected {
+  background-color: #abd0f8;
+}
+
+/* Correct and Incorrect entries */
+.sudoku-cell.correct {
+  background-color: #d4edda;
+}
+.sudoku-cell.incorrect {
+  color: red;
+  background-color: #f8d7da;
+}
+
+/* Bold borders for 3x3 subgrids */
+.sudoku-cell:nth-child(3n + 1) {
+  border-left: 3px solid #000; /* Thick left border for 1st column */
+}
+.sudoku-cell:nth-child(3n + 4) {
+  border-left: 3px solid #000; /* Thick left border for 4th column */
+}
+.sudoku-cell:nth-child(3n + 7) {
+  border-left: 3px solid #000; /* Thick left border for 7th column */
+}
+
+/* Thicker horizontal borders for the rows (1, 4, 7) */
+.sudoku-cell:nth-child(-n + 9) {
+  border-top: 3px solid #000; /* Top border for the first row */
+}
+.sudoku-cell:nth-child(n + 28):nth-child(-n + 36) {
+  border-top: 3px solid #000; /* Top border for the fourth row */
+}
+.sudoku-cell:nth-child(n + 55):nth-child(-n + 63) {
+  border-top: 3px solid #000; /* Top border for the seventh row */
+}
+
+/* Button Container Styles */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Number Button Styles */
+.number-buttons {
+  display: flex;
+  gap: 5px;
+  margin-top: 30px;
+}
+
+.number-button {
+  width: 30px;
+  height: 30px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.number-button:hover {
+  background-color: #0056b3;
+}
+
+/* Control Button Styles */
+.control-button {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.control-button.play-again {
+  background-color: #17a2b8;
+}
+
+.control-button:hover {
+  background-color: #218838;
+}
+
+.control-button.play-again:hover {
+  background-color: #138496;
+}
+
+/* Message Styles */
+.message {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
+
+
+
+.sudoku-cell:nth-child(3n+3) {
+  border-bottom: 3px solid #000; /* Thick left border for 1st column */
+}
+
+.sudoku-row:nth-child(3n+1) .sudoku-cell {
+  border-left: 3px solid #000; /* Thick left border for 1st column */
+}

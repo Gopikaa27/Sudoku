@@ -1,13 +1,13 @@
 .footer {
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px 0;
-    background-color: #f4f4f4; /* Light background for footer */
-    border-top: 1px solid #ccc; /* Top border for separation */
-  }
-  
-  .footer p {
-    font-size: 1em;
-    color: #333;
-  }
-  
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px 0;
+  background-color: #f4f4f4; /* Footer background */
+  border-top: 1px solid #ccc; /* Top border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.footer p {
+  font-size: 1em; /* Font size for footer text */
+  color: #333; /* Text color */
+}
